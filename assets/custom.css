@@ -1,0 +1,202 @@
+body {
+  font-family: Arial, sans-serif;
+  font-size: 16px !important;
+}
+
+/* Fix per H1 (.home-title) - Word-breaking approach */
+.home-title {
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  letter-spacing: -2px !important;
+  overflow-wrap: break-word !important;
+  word-break: break-word !important;
+  hyphens: auto !important;
+  -webkit-hyphens: auto !important;
+  -ms-hyphens: auto !important;
+}
+
+/* Fix per H2 troncato */
+h2 {
+  margin-left: 0 !important;
+  letter-spacing: -1px !important;
+}
+
+/* Assicurati che i container non nascondano il testo */
+.container {
+  overflow: visible !important;
+}
+
+.w-container {
+  overflow: visible !important;
+}
+
+/* H2 E P NELLA CONTACT GRID OCCUPANO TUTTA LA LARGHEZZA */
+.contact-grid-wrapper > h2,
+.contact-grid-wrapper > p {
+  grid-column: 1 / -1 !important; /* Occupa tutte le colonne */
+}
+
+/* INGRANDISCI TESTO BOLD NEI BOX STATS - APPLICA A TUTTE LE CELLE */
+.stat-wrapper strong {
+  font-size: 1.1em !important;
+  line-height: 1.4 !important;
+}
+
+.summary {
+  max-width: 75% !important;
+}
+
+:is(#communication, #branding, #content, #digital, #events, #customer, #people, #csr, #development, #story) .summary {
+  max-width: 90% !important;
+}
+
+h3 {
+  font-size: 3.5vw !important;
+  font-weight: 600 !important;
+}
+
+.stats-grid {
+  grid-template-columns: 1fr 1fr 1fr 1fr !important;
+  max-width: 100% !important;
+}
+
+/* MEDIA QUERY PER TABLET (768px - 991px) - 2x2 */
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .home-title {
+    letter-spacing: -1.5px !important;
+    font-size: 14vw !important;
+    line-height: 1.1 !important;
+  }
+  
+  h2 {
+    margin-left: 0 !important;
+    letter-spacing: -1px !important;
+  }
+  
+  .summary {
+    max-width: 90% !important;
+  }
+  
+  h3 {
+    font-size: 4.5vw !important;
+  }
+  
+  .stat-wrapper strong {
+    font-size: 1.12em !important;
+  }
+  
+  :is(#communication, #branding, #content, #digital, #events, #customer, #people, #csr, #development) .summary {
+    max-width: 100% !important;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr 1fr !important; /* DUE COLONNE - 2x2 */
+  }
+}
+
+/* MEDIA QUERY PER MOBILE (<767px) - 1 COLONNA */
+@media screen and (max-width: 767px) {
+  /* Fix allineamento hero titles in mobile */
+  .hero-heading-bottom {
+    justify-content: flex-start !important;
+  }
+  
+  .home-title {
+    margin-left: 0 !important;
+    letter-spacing: -1.5px !important;
+    font-size: 20vw !important;
+    line-height: 1.1 !important;
+    text-align: left !important;
+  }
+  
+  h2 {
+    margin-left: 0 !important;
+    letter-spacing: -0.5px !important;
+    font-size: 12vw !important;
+  }
+  
+  .summary {
+    max-width: 100% !important;
+  }
+  
+  h3 {
+    font-size: 6vw !important;
+  }
+  
+  .stat-wrapper strong {
+    font-size: 1.15em !important;
+  }
+  
+  :is(#communication, #branding, #content, #digital, #events, #customer, #people, #csr, #development) .summary {
+    max-width: 100% !important;
+  }
+  
+  .stats-grid {
+    grid-template-columns: 1fr !important; /* UNA COLONNA */
+  }
+}
+
+/* MEDIA QUERY PER EXTRA SMALL DEVICES (<375px) */
+@media screen and (max-width: 374px) {
+  .home-title {
+    font-size: 18vw !important;
+    letter-spacing: -1.8px !important;
+  }
+}
+
+/* ===================================
+   MARQUEE ANIMATION - HERO TEXT
+   =================================== */
+
+/* Keyframes per animazione marquee infinita */
+@keyframes marquee-scroll {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Applica animazione al container interno */
+.hero-marquee-inner {
+  animation: marquee-scroll 30s linear infinite;
+  will-change: transform;
+  max-width: none !important; /* Rimuove limite di larghezza per loop infinito */
+  width: auto; /* Permette al contenuto di definire la larghezza */
+  white-space: nowrap; /* Previene line breaks */
+}
+
+/* Assicura che il wrapper permetta l'overflow mascherato */
+.hero-marquee-wrapper {
+  position: relative;
+  overflow: hidden !important;
+  height: 20px; /* Altezza consistente per il marquee */
+  display: flex;
+  align-items: center;
+}
+
+/* Ottimizzazione per i gradienti di fade */
+.left-white-gradient,
+.right-white-gradient {
+  pointer-events: none; /* Non interferisce con gli eventi */
+  z-index: 2;
+}
+
+/* Pausa animazione on hover per UX migliore */
+.hero-marquee-wrapper:hover .hero-marquee-inner {
+  animation-play-state: paused;
+}
+
+/* Responsive speed adjustments */
+@media screen and (max-width: 991px) {
+  .hero-marquee-inner {
+    animation-duration: 25s; /* Leggermente più veloce su tablet */
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .hero-marquee-inner {
+    animation-duration: 20s; /* Più veloce su mobile per viewport più piccoli */
+  }
+}

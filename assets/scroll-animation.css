@@ -1,0 +1,59 @@
+/* ANIMAZIONE SCROLL PER IMMAGINI */
+
+/* Stato iniziale: immagini nascoste (height: 0) */
+.animated-grid-image {
+  height: 0% !important;
+  width: 100% !important;
+  opacity: 0;
+  overflow: hidden;
+  transition: height 1s cubic-bezier(0.645, 0.045, 0.355, 1), 
+              opacity 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* Stato finale: immagini visibili quando in viewport */
+.animated-grid-image.visible {
+  height: 100% !important;
+  opacity: 1;
+}
+
+/* EFFETTO ZOOM COMBINATO per immagini specifiche */
+
+/* Stato iniziale: scale ridotto */
+.animated-grid-image.zoom-effect {
+  transform: scale(0.8);
+  transition: height 1s cubic-bezier(0.645, 0.045, 0.355, 1), 
+              opacity 1s cubic-bezier(0.645, 0.045, 0.355, 1),
+              transform 1s cubic-bezier(0.645, 0.045, 0.355, 1);
+}
+
+/* Stato finale: scale normale quando visible */
+.animated-grid-image.zoom-effect.visible {
+  transform: scale(1);
+}
+
+/* Assicura che il container delle immagini permetta l'overflow durante l'animazione */
+.service-grid {
+  overflow: visible !important;
+}
+
+/* Container per immagini con zoom - permette overflow */
+._2-col-grid,
+.about-page-hero-grid,
+.about-page-hero-image-wrapper {
+  overflow: visible !important;
+}
+
+/* EFFETTO PARALLASSE PER IMMAGINI PROFILI */
+
+/* Prepara le immagini per il parallasse */
+.floating-image {
+  will-change: transform;
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+}
+
+/* Container delle immagini floating */
+.floating-image-wrapper {
+  overflow: hidden;
+  position: relative;
+}
