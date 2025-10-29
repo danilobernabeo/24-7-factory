@@ -7,18 +7,25 @@
    * Configurazione dell'animazione
    */
   const CONFIG = {
-    // Altezza iniziale dell'immagine (formato quadrato: circa 100vw)
-    initialHeightVh: 100,
-    // Altezza finale dell'immagine (formato allargato: 120vh)
+    // Dimensioni iniziali (formato quadrato centrato)
+    initialWidthVw: 50,
+    initialHeightVw: 50,
+
+    // Dimensioni finali (formato rettangolare a tutto schermo)
+    finalWidthVw: 100,
     finalHeightVh: 120,
+
     // Punto di inizio dell'animazione (quando l'elemento inizia a entrare nella viewport)
     startThreshold: 0,
-    // Punto di fine dell'animazione (quando l'elemento è al centro della viewport)
-    endThreshold: 0.6,
+    // Punto di fine dell'animazione (quando l'elemento è circa a metà viewport)
+    endThreshold: 0.5,
+
     // Intensità dell'effetto parallax (movimento verticale in %)
     parallaxIntensity: 16.326, // Valore originale da Webflow
+
     // Easing per l'animazione
     easingFunction: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+
     // Debug mode
     debug: true
   };
@@ -66,21 +73,37 @@
     // Applica easing per una transizione smooth
     const easedProgress = easeInOutCubic(scrollProgress);
 
-    // Calcola l'altezza interpolata
-    const currentHeightVh = CONFIG.initialHeightVh +
-                            (CONFIG.finalHeightVh - CONFIG.initialHeightVh) * easedProgress;
+    // Calcola la larghezza interpolata (da 50vw a 100vw)
+    const currentWidthVw = CONFIG.initialWidthVw +
+                           (CONFIG.finalWidthVw - CONFIG.initialWidthVw) * easedProgress;
+
+    // Calcola l'altezza interpolata (da 50vw a 120vh)
+    // Nota: altezza iniziale è in VW (per essere quadrato), finale in VH
+    const currentHeightVw = CONFIG.initialHeightVw +
+                            (CONFIG.finalHeightVh - CONFIG.initialHeightVw) * easedProgress;
+
+    // Unità per l'altezza: all'inizio è vw (quadrato), alla fine è vh (rettangolare)
+    const heightUnit = easedProgress < 0.5 ? 'vw' : 'vh';
+    const heightValue = easedProgress < 0.5
+      ? currentHeightVw
+      : CONFIG.initialHeightVw + (CONFIG.finalHeightVh - CONFIG.initialHeightVw) * ((easedProgress - 0.5) * 2);
 
     // Calcola il movimento parallax (da +parallaxIntensity% a 0%)
-    // Quando progress = 0, parallax = +20% (immagine spostata in basso)
+    // Quando progress = 0, parallax = +16.326% (immagine spostata in basso)
     // Quando progress = 1, parallax = 0% (immagine centrata)
     const parallaxY = CONFIG.parallaxIntensity * (1 - easedProgress);
 
     // Applica le trasformazioni con !important per sovrascrivere il CSS
-    element.style.setProperty('height', `${currentHeightVh}vh`, 'important');
-    element.style.setProperty('min-height', `${currentHeightVh}vh`, 'important');
-    element.style.setProperty('max-height', `${currentHeightVh}vh`, 'important');
+    element.style.setProperty('width', `${currentWidthVw}vw`, 'important');
+    element.style.setProperty('min-width', `${currentWidthVw}vw`, 'important');
+    element.style.setProperty('max-width', `${currentWidthVw}vw`, 'important');
+
+    element.style.setProperty('height', `${heightValue}${heightUnit}`, 'important');
+    element.style.setProperty('min-height', `${heightValue}${heightUnit}`, 'important');
+    element.style.setProperty('max-height', `${heightValue}${heightUnit}`, 'important');
+
     element.style.setProperty('transform', `translate3d(0px, ${parallaxY}%, 0px)`, 'important');
-    element.style.setProperty('will-change', 'transform, height');
+    element.style.setProperty('will-change', 'transform, width, height');
   }
 
   /**

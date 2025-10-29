@@ -1,48 +1,76 @@
 /* ==========================================
    ANIMATED BACKGROUND IMAGE - Stili per animazione
-   Sovrascrive gli stili statici di Webflow
+   L'immagine parte da formato quadrato e si allarga a rettangolare
    ========================================== */
 
 /* Container dell'immagine animata */
 .animated-bg-image-wrapper {
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   overflow: hidden;
   height: 100vh;
   max-height: 100vh;
+  width: 100%;
 }
 
-/* Immagine animata - Stato iniziale */
+/* Immagine animata - Stato iniziale QUADRATO */
 .animated-bg-image {
-  /* Forza lo stato iniziale per l'animazione */
-  height: 100vh !important;
-  min-height: 100vh !important;
-  max-height: 100vh !important;
+  /* Dimensioni iniziali: formato quadrato centrato */
+  width: 50vw !important;
+  height: 50vw !important;
+  min-width: 50vw !important;
+  min-height: 50vw !important;
+  max-width: 50vw !important;
+  max-height: 50vw !important;
 
   /* Preparazione per transform smooth */
-  will-change: transform, height;
+  will-change: transform, width, height;
   transform-style: preserve-3d;
 
   /* Posizione iniziale del parallax */
-  transform: translate3d(0px, 20%, 0px);
+  transform: translate3d(0px, 16.326%, 0px);
 
-  /* Background image (mantiene quello del CSS originale) */
-  background-position: 50% 0;
+  /* Background image - centra l'immagine */
+  background-position: 50% 50%;
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: scroll;
-  width: 100vw;
+
+  /* Bordo arrotondato per evidenziare il formato quadrato (opzionale) */
+  border-radius: 0;
+
+  /* Transizione smooth */
+  transition: border-radius 0.6s ease;
 }
 
 /* Media queries per responsive */
+@media screen and (max-width: 991px) {
+  .animated-bg-image {
+    /* Su tablet, quadrato più grande */
+    width: 60vw !important;
+    height: 60vw !important;
+    min-width: 60vw !important;
+    min-height: 60vw !important;
+    max-width: 60vw !important;
+    max-height: 60vw !important;
+  }
+}
+
 @media screen and (max-width: 767px) {
   .animated-bg-image-wrapper {
-    height: 50vh;
-    max-height: 50vh;
+    height: 70vh;
+    max-height: 70vh;
   }
 
   .animated-bg-image {
-    height: 70vh !important;
-    min-height: 70vh !important;
-    max-height: 70vh !important;
+    /* Su mobile, quadrato più grande o quasi full width */
+    width: 80vw !important;
+    height: 80vw !important;
+    min-width: 80vw !important;
+    min-height: 80vw !important;
+    max-width: 80vw !important;
+    max-height: 80vw !important;
   }
 }
