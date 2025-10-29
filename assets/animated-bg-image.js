@@ -1,5 +1,6 @@
-// ANIMAZIONE IMMAGINE BACKGROUND - Effetto Parallax + Espansione
-// Ricrea l'effetto originale di Webflow senza dipendenze
+// ANIMAZIONE IMMAGINE BACKGROUND - Effetto Parallax + Espansione Fluida
+// L'espansione avviene tramite CSS transition (fluida e indipendente dallo scroll)
+// Il parallax continua sempre in tempo reale
 (function() {
   'use strict';
 
@@ -7,104 +8,16 @@
    * Configurazione dell'animazione
    */
   const CONFIG = {
-    // Dimensioni iniziali (formato quadrato centrato)
-    initialWidthVw: 50,
-    initialHeightVw: 50,
+    // Punto di trigger per l'espansione (quando l'elemento è visibile al 50% nella viewport)
+    expansionTrigger: 0.5,
 
-    // Dimensioni finali (formato rettangolare a tutto schermo)
-    finalWidthVw: 100,
-    finalHeightVh: 120,
-
-    // Punto di inizio dell'animazione (quando l'elemento inizia a entrare nella viewport)
-    startThreshold: 0,
-    // Punto di fine dell'animazione (quando l'elemento è circa a metà viewport)
-    endThreshold: 0.5,
-
-    // Intensità dell'effetto parallax (movimento verticale in %)
-    parallaxIntensity: 16.326, // Valore originale da Webflow
-
-    // Easing per l'animazione
-    easingFunction: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+    // Intensità dell'effetto parallax (movimento verticale in px)
+    // Più alto = più movimento
+    parallaxIntensity: 50,
 
     // Debug mode
     debug: true
   };
-
-  /**
-   * Funzione di easing per creare transizioni smooth
-   * @param {number} t - Progresso normalizzato (0-1)
-   * @returns {number} - Valore eased
-   */
-  function easeInOutCubic(t) {
-    return t < 0.5
-      ? 4 * t * t * t
-      : 1 - Math.pow(-2 * t + 2, 3) / 2;
-  }
-
-  /**
-   * Calcola il progresso dello scroll per un elemento
-   * @param {DOMRect} rect - Bounding rect dell'elemento
-   * @param {number} windowHeight - Altezza della finestra
-   * @returns {number} - Progresso normalizzato (0-1)
-   */
-  function calculateScrollProgress(rect, windowHeight) {
-    // Calcola quando l'elemento entra nella viewport
-    const elementTop = rect.top;
-    const elementHeight = rect.height;
-
-    // Posizione dell'elemento rispetto alla viewport
-    // 0 = top della viewport, 1 = bottom della viewport
-    const viewportProgress = (windowHeight - elementTop) / (windowHeight + elementHeight);
-
-    // Mappa il progresso tra startThreshold e endThreshold
-    const normalizedProgress = (viewportProgress - CONFIG.startThreshold) /
-                                (CONFIG.endThreshold - CONFIG.startThreshold);
-
-    // Clamp tra 0 e 1
-    return Math.max(0, Math.min(1, normalizedProgress));
-  }
-
-  /**
-   * Applica l'animazione all'immagine
-   * @param {HTMLElement} element - Elemento da animare
-   * @param {number} scrollProgress - Progresso dello scroll (0-1)
-   */
-  function applyAnimation(element, scrollProgress) {
-    // Applica easing per una transizione smooth
-    const easedProgress = easeInOutCubic(scrollProgress);
-
-    // Calcola la larghezza interpolata (da 50vw a 100vw)
-    const currentWidthVw = CONFIG.initialWidthVw +
-                           (CONFIG.finalWidthVw - CONFIG.initialWidthVw) * easedProgress;
-
-    // Calcola l'altezza interpolata (da 50vw a 120vh)
-    // Nota: altezza iniziale è in VW (per essere quadrato), finale in VH
-    const currentHeightVw = CONFIG.initialHeightVw +
-                            (CONFIG.finalHeightVh - CONFIG.initialHeightVw) * easedProgress;
-
-    // Unità per l'altezza: all'inizio è vw (quadrato), alla fine è vh (rettangolare)
-    const heightUnit = easedProgress < 0.5 ? 'vw' : 'vh';
-    const heightValue = easedProgress < 0.5
-      ? currentHeightVw
-      : CONFIG.initialHeightVw + (CONFIG.finalHeightVh - CONFIG.initialHeightVw) * ((easedProgress - 0.5) * 2);
-
-    // Calcola il movimento parallax (da +parallaxIntensity% a 0%)
-    // Quando progress = 0, parallax = +16.326% (immagine spostata in basso)
-    // Quando progress = 1, parallax = 0% (immagine centrata)
-    const parallaxY = CONFIG.parallaxIntensity * (1 - easedProgress);
-
-    // Applica le trasformazioni con !important per sovrascrivere il CSS
-    element.style.setProperty('width', `${currentWidthVw}vw`, 'important');
-    element.style.setProperty('min-width', `${currentWidthVw}vw`, 'important');
-    element.style.setProperty('max-width', `${currentWidthVw}vw`, 'important');
-
-    element.style.setProperty('height', `${heightValue}${heightUnit}`, 'important');
-    element.style.setProperty('min-height', `${heightValue}${heightUnit}`, 'important');
-    element.style.setProperty('max-height', `${heightValue}${heightUnit}`, 'important');
-
-    element.style.setProperty('transform', `translate3d(0px, ${parallaxY}%, 0px)`, 'important');
-    element.style.setProperty('will-change', 'transform, width, height');
-  }
 
   /**
    * Inizializza l'animazione per l'immagine
@@ -123,29 +36,65 @@
       console.log('📦 Elemento trovato:', animatedImage);
     }
 
-    // Stato iniziale
+    // Flag per triggerare l'espansione una sola volta
+    let hasExpanded = false;
+
+    // Throttling per performance
     let ticking = false;
 
     /**
-     * Funzione di update che viene chiamata durante lo scroll
+     * Funzione principale che gestisce scroll
      */
-    function updateAnimation() {
+    function onScroll() {
       const rect = animatedImage.getBoundingClientRect();
       const windowHeight = window.innerHeight;
 
-      // Calcola il progresso
-      const scrollProgress = calculateScrollProgress(rect, windowHeight);
+      // === 1. GESTIONE ESPANSIONE (una volta sola) ===
+      if (!hasExpanded) {
+        // Calcola quando l'elemento è visibile nella viewport
+        const elementTop = rect.top;
+        const elementHeight = rect.height;
+        const visibleProgress = (windowHeight - elementTop) / (windowHeight + elementHeight);
 
-      // Debug logging
-      if (CONFIG.debug && scrollProgress > 0 && scrollProgress < 1) {
-        console.log(`📊 Progress: ${(scrollProgress * 100).toFixed(1)}% | Top: ${rect.top.toFixed(0)}px`);
+        // Se l'elemento ha raggiunto il punto di trigger, espandi
+        if (visibleProgress >= CONFIG.expansionTrigger) {
+          animatedImage.classList.add('expanded');
+          hasExpanded = true;
+
+          if (CONFIG.debug) {
+            console.log('🎯 ESPANSIONE TRIGGERATA! Elemento si espande a schermo intero');
+          }
+        }
       }
 
-      // Applica l'animazione
-      applyAnimation(animatedImage, scrollProgress);
+      // === 2. EFFETTO PARALLAX (sempre attivo) ===
+      applyParallax(animatedImage, rect, windowHeight);
 
       // Reset ticking flag
       ticking = false;
+    }
+
+    /**
+     * Applica l'effetto parallax continuo
+     * @param {HTMLElement} element - Elemento da animare
+     * @param {DOMRect} rect - Bounding rect dell'elemento
+     * @param {number} windowHeight - Altezza della finestra
+     */
+    function applyParallax(element, rect, windowHeight) {
+      // Calcola la posizione dell'elemento rispetto al viewport
+      // 0 = top viewport, 1 = bottom viewport
+      const elementTop = rect.top;
+      const elementHeight = rect.height;
+      const scrollProgress = (windowHeight - elementTop) / (windowHeight + elementHeight);
+
+      // Calcola il movimento parallax
+      // Quando l'elemento è fuori vista in alto: movimento negativo (verso l'alto)
+      // Quando l'elemento è al centro: movimento 0
+      // Quando l'elemento è fuori vista in basso: movimento positivo (verso il basso)
+      const parallaxY = (scrollProgress - 0.5) * CONFIG.parallaxIntensity;
+
+      // Applica il transform per il parallax
+      element.style.transform = `translate3d(0px, ${parallaxY}px, 0px)`;
     }
 
     /**
@@ -153,7 +102,7 @@
      */
     function requestTick() {
       if (!ticking) {
-        window.requestAnimationFrame(updateAnimation);
+        window.requestAnimationFrame(onScroll);
         ticking = true;
       }
     }
@@ -165,7 +114,7 @@
     window.addEventListener('resize', requestTick, { passive: true });
 
     // Esegui una volta all'inizio per impostare lo stato iniziale
-    updateAnimation();
+    onScroll();
   }
 
   /**
