@@ -11,14 +11,16 @@
     initialHeightVh: 100,
     // Altezza finale dell'immagine (formato allargato: 120vh)
     finalHeightVh: 120,
-    // Punto di inizio dell'animazione (quando l'elemento è visibile al X% nella viewport)
-    startThreshold: 0.1,
-    // Punto di fine dell'animazione (quando l'elemento è visibile al X% nella viewport)
-    endThreshold: 0.5,
+    // Punto di inizio dell'animazione (quando l'elemento inizia a entrare nella viewport)
+    startThreshold: 0,
+    // Punto di fine dell'animazione (quando l'elemento è al centro della viewport)
+    endThreshold: 0.6,
     // Intensità dell'effetto parallax (movimento verticale in %)
-    parallaxIntensity: 20,
+    parallaxIntensity: 16.326, // Valore originale da Webflow
     // Easing per l'animazione
-    easingFunction: 'cubic-bezier(0.645, 0.045, 0.355, 1)'
+    easingFunction: 'cubic-bezier(0.645, 0.045, 0.355, 1)',
+    // Debug mode
+    debug: true
   };
 
   /**
@@ -73,12 +75,12 @@
     // Quando progress = 1, parallax = 0% (immagine centrata)
     const parallaxY = CONFIG.parallaxIntensity * (1 - easedProgress);
 
-    // Applica le trasformazioni
-    element.style.height = `${currentHeightVh}vh`;
-    element.style.minHeight = `${currentHeightVh}vh`;
-    element.style.maxHeight = `${currentHeightVh}vh`;
-    element.style.transform = `translate3d(0px, ${parallaxY}%, 0px)`;
-    element.style.willChange = 'transform, height';
+    // Applica le trasformazioni con !important per sovrascrivere il CSS
+    element.style.setProperty('height', `${currentHeightVh}vh`, 'important');
+    element.style.setProperty('min-height', `${currentHeightVh}vh`, 'important');
+    element.style.setProperty('max-height', `${currentHeightVh}vh`, 'important');
+    element.style.setProperty('transform', `translate3d(0px, ${parallaxY}%, 0px)`, 'important');
+    element.style.setProperty('will-change', 'transform, height');
   }
 
   /**
@@ -93,7 +95,10 @@
       return;
     }
 
-    console.log('Animazione animated-bg-image inizializzata');
+    if (CONFIG.debug) {
+      console.log('✅ Animazione animated-bg-image inizializzata');
+      console.log('📦 Elemento trovato:', animatedImage);
+    }
 
     // Stato iniziale
     let ticking = false;
@@ -107,6 +112,11 @@
 
       // Calcola il progresso
       const scrollProgress = calculateScrollProgress(rect, windowHeight);
+
+      // Debug logging
+      if (CONFIG.debug && scrollProgress > 0 && scrollProgress < 1) {
+        console.log(`📊 Progress: ${(scrollProgress * 100).toFixed(1)}% | Top: ${rect.top.toFixed(0)}px`);
+      }
 
       // Applica l'animazione
       applyAnimation(animatedImage, scrollProgress);

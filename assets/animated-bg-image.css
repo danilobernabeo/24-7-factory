@@ -1,0 +1,48 @@
+/* ==========================================
+   ANIMATED BACKGROUND IMAGE - Stili per animazione
+   Sovrascrive gli stili statici di Webflow
+   ========================================== */
+
+/* Container dell'immagine animata */
+.animated-bg-image-wrapper {
+  position: relative;
+  overflow: hidden;
+  height: 100vh;
+  max-height: 100vh;
+}
+
+/* Immagine animata - Stato iniziale */
+.animated-bg-image {
+  /* Forza lo stato iniziale per l'animazione */
+  height: 100vh !important;
+  min-height: 100vh !important;
+  max-height: 100vh !important;
+
+  /* Preparazione per transform smooth */
+  will-change: transform, height;
+  transform-style: preserve-3d;
+
+  /* Posizione iniziale del parallax */
+  transform: translate3d(0px, 20%, 0px);
+
+  /* Background image (mantiene quello del CSS originale) */
+  background-position: 50% 0;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: scroll;
+  width: 100vw;
+}
+
+/* Media queries per responsive */
+@media screen and (max-width: 767px) {
+  .animated-bg-image-wrapper {
+    height: 50vh;
+    max-height: 50vh;
+  }
+
+  .animated-bg-image {
+    height: 70vh !important;
+    min-height: 70vh !important;
+    max-height: 70vh !important;
+  }
+}
