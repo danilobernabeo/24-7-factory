@@ -8,12 +8,12 @@
    * Configurazione dell'animazione
    */
   const CONFIG = {
-    // Punto di trigger per l'espansione (quando l'elemento è visibile al 50% nella viewport)
+    // Punto di trigger per l'espansione (quando l'immagine è visibile al 50%)
     expansionTrigger: 0.5,
 
     // Intensità dell'effetto parallax (movimento verticale in px)
-    // Più alto = più movimento
-    parallaxIntensity: 50,
+    // Range totale: da -100px a +100px
+    parallaxIntensity: 100,
 
     // Debug mode
     debug: true
@@ -51,13 +51,25 @@
 
       // === 1. GESTIONE ESPANSIONE (una volta sola) ===
       if (!hasExpanded) {
-        // Calcola quando l'elemento è visibile nella viewport
+        // Calcola quanto l'immagine è visibile nella viewport
         const elementTop = rect.top;
+        const elementBottom = rect.bottom;
         const elementHeight = rect.height;
-        const visibleProgress = (windowHeight - elementTop) / (windowHeight + elementHeight);
 
-        // Se l'elemento ha raggiunto il punto di trigger, espandi
-        if (visibleProgress >= CONFIG.expansionTrigger) {
+        // Calcola la porzione visibile dell'elemento
+        const visibleTop = Math.max(0, Math.min(elementHeight, windowHeight - elementTop));
+        const visibleBottom = Math.max(0, Math.min(elementHeight, elementBottom));
+        const visibleHeight = Math.min(visibleTop, visibleBottom);
+
+        // Percentuale di visibilità (0 = non visibile, 1 = completamente visibile)
+        const visibilityRatio = visibleHeight / elementHeight;
+
+        if (CONFIG.debug && visibilityRatio > 0 && visibilityRatio < 1) {
+          console.log(`👁️ Visibilità immagine: ${(visibilityRatio * 100).toFixed(1)}%`);
+        }
+
+        // Se l'immagine è visibile al 50% o più, espandi
+        if (visibilityRatio >= CONFIG.expansionTrigger) {
           animatedImage.classList.add('expanded');
           hasExpanded = true;
 
@@ -81,17 +93,25 @@
      * @param {number} windowHeight - Altezza della finestra
      */
     function applyParallax(element, rect, windowHeight) {
-      // Calcola la posizione dell'elemento rispetto al viewport
-      // 0 = top viewport, 1 = bottom viewport
-      const elementTop = rect.top;
-      const elementHeight = rect.height;
-      const scrollProgress = (windowHeight - elementTop) / (windowHeight + elementHeight);
+      // Calcola la posizione dell'elemento rispetto al centro della viewport
+      const elementCenter = rect.top + (rect.height / 2);
+      const viewportCenter = windowHeight / 2;
 
-      // Calcola il movimento parallax
-      // Quando l'elemento è fuori vista in alto: movimento negativo (verso l'alto)
-      // Quando l'elemento è al centro: movimento 0
-      // Quando l'elemento è fuori vista in basso: movimento positivo (verso il basso)
-      const parallaxY = (scrollProgress - 0.5) * CONFIG.parallaxIntensity;
+      // Distanza dal centro della viewport (in px)
+      const distanceFromCenter = elementCenter - viewportCenter;
+
+      // Calcola il movimento parallax basato sulla distanza
+      // Quando l'elemento è sopra il centro: movimento negativo (verso l'alto)
+      // Quando l'elemento è sotto il centro: movimento positivo (verso il basso)
+      // Range normalizzato: -1 a +1
+      const normalizedDistance = distanceFromCenter / (windowHeight / 2);
+
+      // Applica l'intensità del parallax
+      const parallaxY = normalizedDistance * CONFIG.parallaxIntensity;
+
+      if (CONFIG.debug && Math.abs(parallaxY) > 0 && Math.abs(parallaxY) < CONFIG.parallaxIntensity) {
+        console.log(`🎨 Parallax Y: ${parallaxY.toFixed(1)}px`);
+      }
 
       // Applica il transform per il parallax
       element.style.transform = `translate3d(0px, ${parallaxY}px, 0px)`;
