@@ -455,7 +455,83 @@ html {
 
 /* ACCESSIBILITY: Rispetta le preferenze utente */
 @media (prefers-reduced-motion: reduce) {
-    html { 
-        scroll-behavior: auto; 
+    html {
+        scroll-behavior: auto;
     }
+}
+
+/* ===================================
+   MARQUEE ANIMATION - HERO TEXT
+   =================================== */
+
+/* Keyframes per animazione marquee infinita */
+@keyframes marquee-scroll {
+  0% {
+    transform: translate3d(0%, 0, 0);
+  }
+  100% {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* Applica animazione al container interno */
+.hero-marquee-inner {
+  display: flex;
+  animation: marquee-scroll 30s linear infinite;
+  will-change: transform;
+  width: auto; /* Permette al contenuto di definire la larghezza */
+}
+
+/* Ogni marquee item */
+.hero-text-marquee {
+  display: flex;
+  align-items: center;
+  white-space: nowrap; /* Previene line breaks */
+  flex-shrink: 0;
+}
+
+/* Assicura che il wrapper permetta l'overflow mascherato */
+.hero-marquee-wrapper {
+  position: relative;
+  overflow: hidden !important;
+  display: flex;
+  align-items: center;
+}
+
+/* Ottimizzazione per i gradienti di fade */
+.left-white-gradient,
+.right-white-gradient {
+  pointer-events: none; /* Non interferisce con gli eventi */
+  z-index: 2;
+  position: absolute;
+  height: 100%;
+  width: 100px;
+}
+
+.left-white-gradient {
+  left: 0;
+  background: linear-gradient(to right, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.right-white-gradient {
+  right: 0;
+  background: linear-gradient(to left, rgba(255, 255, 255, 1) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+/* Pausa animazione on hover per UX migliore */
+.hero-marquee-wrapper:hover .hero-marquee-inner {
+  animation-play-state: paused;
+}
+
+/* Responsive speed adjustments */
+@media screen and (max-width: 991px) {
+  .hero-marquee-inner {
+    animation-duration: 25s; /* Leggermente più veloce su tablet */
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .hero-marquee-inner {
+    animation-duration: 20s; /* Più veloce su mobile per viewport più piccoli */
+  }
 }
