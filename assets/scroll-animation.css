@@ -58,34 +58,33 @@
   position: relative;
 }
 
-/* ==========================================
-   HERO MARQUEE - INFINITE SCROLL ANIMATION
-   ========================================== */
+/* ===========================================
+   MARQUEE SCROLL ANIMATION
+   =========================================== */
 
-/* Animazione marquee: scorrimento infinito da destra a sinistra */
+/* Keyframes per animazione marquee - scroll infinito verso sinistra */
 @keyframes marqueeScroll {
   0% {
     transform: translateX(0);
   }
   100% {
-    transform: translateX(-50%);
+    transform: translateX(-100%);
   }
 }
 
-/* Applica l'animazione all'elemento inner */
-.hero-marquee-inner {
-  animation: marqueeScroll 20s linear infinite;
+/* Applica l'animazione ai contenitori del testo marquee */
+.hero-text-marquee {
+  animation: marqueeScroll 30s linear infinite;
   will-change: transform;
 }
 
-/* Pausa l'animazione al hover per migliorare l'accessibilità */
-.hero-marquee-wrapper:hover .hero-marquee-inner {
-  animation-play-state: paused;
+/* Ottimizzazione performance: usa GPU acceleration */
+.hero-marquee-inner {
+  will-change: transform;
+  transform: translateZ(0);
 }
 
-/* Rispetta le preferenze di movimento ridotto */
-@media (prefers-reduced-motion: reduce) {
-  .hero-marquee-inner {
-    animation: none;
-  }
+/* Pausa animazione on hover per UX migliorata */
+.hero-marquee-wrapper:hover .hero-text-marquee {
+  animation-play-state: paused;
 }

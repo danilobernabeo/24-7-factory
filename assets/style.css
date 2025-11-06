@@ -1372,6 +1372,7 @@ textarea.w-input,textarea.w-select {
   --colors--light-grey:#eff4f7;
   --section-padding--vertical-top-first-section:200px;
   --colors--pink:#F26D9E;
+  --colors--orange:#F29F07;
   --bottom-margins--large-l:100px;
   --colors--white:#fff;
   --bottom-margins--medium-m:40px;
@@ -2466,7 +2467,7 @@ blockquote {
   border-radius:4px;
   outline:2px solid #0050bd}
 .secondary-button {
-  background-color:var(--colors--pink);
+  background-color:var(--colors--orange);
   color:var(--colors--black);
   text-transform:uppercase;
   border-radius:5px;
@@ -2633,7 +2634,7 @@ blockquote {
     --bottom-margins--extra-large-xl:150px;
     --colors--light-grey:#eff4f7;
     --section-padding--vertical-top-first-section:200px;
-    --colors--pink:#F26D9E;
+    --colors--pink:#f6c0f6;
     --bottom-margins--large-l:75px;
     --colors--white:#fff;
     --bottom-margins--medium-m:40px;
@@ -2802,7 +2803,7 @@ blockquote {
     --bottom-margins--extra-large-xl:150px;
     --colors--light-grey:#eff4f7;
     --section-padding--vertical-top-first-section:200px;
-    --colors--pink:#F26D9E;
+    --colors--pink:#f6c0f6;
     --bottom-margins--large-l:50px;
     --colors--white:#fff;
     --bottom-margins--medium-m:40px;
@@ -2941,7 +2942,7 @@ blockquote {
     --bottom-margins--extra-large-xl:150px;
     --colors--light-grey:#eff4f7;
     --section-padding--vertical-top-first-section:200px;
-    --colors--pink:#F26D9E;
+    --colors--pink:#f6c0f6;
     --bottom-margins--large-l:40px;
     --colors--white:#fff;
     --bottom-margins--medium-m:40px;
