@@ -57,3 +57,35 @@
   overflow: hidden;
   position: relative;
 }
+
+/* ==========================================
+   HERO MARQUEE - INFINITE SCROLL ANIMATION
+   ========================================== */
+
+/* Animazione marquee: scorrimento infinito da destra a sinistra */
+@keyframes marqueeScroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+/* Applica l'animazione all'elemento inner */
+.hero-marquee-inner {
+  animation: marqueeScroll 20s linear infinite;
+  will-change: transform;
+}
+
+/* Pausa l'animazione al hover per migliorare l'accessibilità */
+.hero-marquee-wrapper:hover .hero-marquee-inner {
+  animation-play-state: paused;
+}
+
+/* Rispetta le preferenze di movimento ridotto */
+@media (prefers-reduced-motion: reduce) {
+  .hero-marquee-inner {
+    animation: none;
+  }
+}
