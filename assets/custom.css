@@ -145,6 +145,8 @@ h3 {
     grid-column-gap: 50px !important; /* Spaziatura aumentata tra colonne */
     grid-row-gap: 50px !important; /* Spaziatura aumentata tra righe */
     max-width: 1200px !important; /* Larghezza massima 1200px */
+    margin-left: 0 !important; /* Allineamento a SINISTRA */
+    margin-right: 0 !important;
   }
 }
 
