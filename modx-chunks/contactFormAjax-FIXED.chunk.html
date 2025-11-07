@@ -2,9 +2,10 @@
   CHUNK MODX: contactFormAjax - VERSIONE FIXED
 
   Fix: Aggiunto marker nascosto per rilevare successo correttamente
+  Fix: ID spostato su wrapper per anchor link header funzionante
 -->
 
-<div class="form-block-2 w-form" id="contact-form-wrapper">
+<div class="form-block-2 w-form" id="contact-form">
 
    <!-- Marker nascosto per AJAX - indica successo -->
    [[!+fi.successMessage:notempty=`
@@ -25,7 +26,7 @@
    </div>
 
    <!-- Form -->
-   <form id="contact-form" name="contact-form" class="contact-form-inner">
+   <form id="contact-form-element" name="contact-form" class="contact-form-inner">
 
       <h2 class="bottom-margin---m">Message</h2>
 
@@ -214,7 +215,7 @@
 (function() {
    'use strict';
 
-   var form = document.getElementById('contact-form');
+   var form = document.getElementById('contact-form-element');
    var submitButton = document.getElementById('submit-button');
    var buttonText = document.getElementById('button-text');
    var buttonLoading = document.getElementById('button-loading');
@@ -290,7 +291,7 @@
             // Mostra messaggio successo
             successMessage.style.display = 'block';
 
-            // Scroll al messaggio
+            // Scroll al messaggio (ora punta a #contact-form che è il wrapper)
             setTimeout(function() {
                successMessage.scrollIntoView({
                   behavior: 'smooth',
