@@ -1,0 +1,53 @@
+<!--
+  VERSIONE DEBUG: FormIt con logging completo
+
+  USA QUESTA VERSIONE PER DIAGNOSTICARE PROBLEMI
+
+  Mostra:
+  - Tutti i valori del form dopo submit
+  - Eventuali errori di validazione
+  - Conferma se l'hook email è stato eseguito
+
+  DOPO IL TEST, torna alla versione normale (contactFormCall-FIXED.snippet.html)
+-->
+
+[[!FormIt?
+   &hooks=`email`
+   &emailTpl=`contactEmail`
+   &emailSubject=`TEST - Nuova richiesta da 27Factory`
+   &emailTo=`danilo.bernabeo@gmail.com`
+   &emailFrom=`danilo.bernabeo@gmail.com`
+   &emailFromName=`Form Test`
+   &emailHtml=`1`
+   &validate=`
+      firstName:required,
+      email:email:required,
+      message:required
+   `
+   &validationErrorMessage=`Errori nel form`
+   &submitVar=`submit-contact`
+   &store=`1`
+]]
+
+[[$contactForm]]
+
+<!-- DEBUG OUTPUT - Mostra i valori dopo submit -->
+[[!+fi.successMessage:notempty=`
+<div style="background: #d4edda; border: 1px solid #c3e6cb; padding: 20px; margin: 20px 0; border-radius: 5px;">
+   <h3 style="color: #155724; margin-top: 0;">✅ FORM INVIATO CON SUCCESSO</h3>
+   <p><strong>Nome:</strong> [[!+firstName]]</p>
+   <p><strong>Email:</strong> [[!+email]]</p>
+   <p><strong>Messaggio:</strong> [[!+message]]</p>
+   <p style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #c3e6cb; color: #666;">
+      Se vedi questo messaggio ma l'email non arriva, il problema è nell'hook email di FormIt.
+   </p>
+</div>
+`]]
+
+<!-- Mostra errori se presenti -->
+[[!+fi.validation_error_message:notempty=`
+<div style="background: #f8d7da; border: 1px solid #f5c6cb; padding: 20px; margin: 20px 0; border-radius: 5px;">
+   <h3 style="color: #721c24; margin-top: 0;">❌ ERRORI DI VALIDAZIONE</h3>
+   <p>[[!+fi.validation_error_message]]</p>
+</div>
+`]]

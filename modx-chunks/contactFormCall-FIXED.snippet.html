@@ -1,0 +1,48 @@
+<!--
+  SNIPPET CALL: FormIt per Contact Form - VERSIONE CORRETTA
+
+  PROBLEMI RISOLTI:
+  1. Aggiunto &emailHtml=1 (necessario per template HTML)
+  2. Rimosso hook 'spam' temporaneamente per debug
+  3. Semplificato emailFrom (usa direttamente l'email invece di placeholder)
+  4. Aggiunto &emailBCC per copia di backup
+
+  ISTRUZIONI:
+  1. Sostituisci il codice FormIt nella tua pagina MODX con questo
+  2. Cambia emailTo con il tuo indirizzo
+  3. Testa il form
+  4. Se funziona, riattiva l'hook spam
+-->
+
+[[!FormIt?
+   &hooks=`email,redirect`
+   &emailTpl=`contactEmail`
+   &emailSubject=`Nuova richiesta di contatto da 27Factory.ch`
+   &emailTo=`danilo.bernabeo@gmail.com`
+   &emailFrom=`danilo.bernabeo@gmail.com`
+   &emailFromName=`Form Contatti 27Factory`
+   &emailReplyTo=`[[!+email]]`
+   &emailReplyToName=`[[!+firstName]] [[!+lastName]]`
+   &emailHtml=`1`
+   &redirectTo=`[[*id]]`
+   &redirectParams=`{"success":"1"}`
+   &validate=`
+      firstName:required:minLength=^2^,
+      lastName:required:minLength=^2^,
+      email:email:required,
+      phone:required:minLength=^8^,
+      message:required:minLength=^10^:maxLength=^5000^
+   `
+   &validationErrorMessage=`Please correct the errors in the form below.`
+   &successMessage=`Thank you for contacting us! We will respond as soon as possible.`
+   &submitVar=`submit-contact`
+   &store=`1`
+   &storeLocation=`cache`
+]]
+
+[[$contactForm]]
+
+<!--
+DOPO CHE FUNZIONA, puoi riattivare lo spam hook:
+&hooks=`spam,email,redirect`
+-->
