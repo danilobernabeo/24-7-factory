@@ -1,0 +1,213 @@
+<!--
+  CHUNK MODX: contactForm - VERSIONE FINALE
+  Form di contatto con UX migliorata
+-->
+
+<div class="form-block-2 w-form" id="contact-form-wrapper">
+
+   <!-- MESSAGGIO DI SUCCESSO -->
+   [[!+fi.successMessage:notempty=`
+      <div class="success-message-custom" style="background-color: #d4edda; border: 2px solid #28a745; color: #155724; padding: 30px; margin-bottom: 30px; border-radius: 8px; text-align: center;">
+         <div style="font-size: 48px; margin-bottom: 15px;">✓</div>
+         <h3 style="color: #155724; margin-top: 0; margin-bottom: 15px;">Messaggio Inviato con Successo!</h3>
+         <p style="font-size: 16px; line-height: 1.6; margin-bottom: 0;">
+            [[!+fi.successMessage]]
+         </p>
+      </div>
+   `]]
+
+   <!-- MESSAGGIO ERRORI GENERALI -->
+   [[!+fi.validation_error_message:notempty=`
+      <div class="error-message-form" style="background-color: #f8d7da; border: 2px solid #BF0A0B; color: #721c24; padding: 20px; margin-bottom: 20px; border-radius: 8px;">
+         <strong>⚠ Attenzione:</strong> [[!+fi.validation_error_message]]
+      </div>
+   `]]
+
+   <!-- FORM (nascosto se successo) -->
+   <form id="contact-form" name="contact-form" method="post" class="contact-form-inner" action="[[~[[*id]]]]#contact-form-wrapper">
+
+      <h2 class="bottom-margin---m">Message</h2>
+
+      <div class="w-layout-grid contact-form-grid">
+
+         <!-- First Name -->
+         <div class="form-field-wrapper">
+            <label for="firstName" class="faq-question">
+               First name <span style="color: #BF0A0B;">*</span>
+            </label>
+            <input
+               class="form-field w-input [[!+fi.error.firstName:notempty=`field-error`]]"
+               maxlength="256"
+               name="firstName"
+               placeholder="Enter your first name"
+               type="text"
+               id="firstName"
+               value="[[!+fi.firstName]]"
+               required
+            >
+            [[!+fi.error.firstName:notempty=`
+               <span class="error-text" style="color: #BF0A0B; font-size: 0.875rem; margin-top: 5px; display: block;">[[!+fi.error.firstName]]</span>
+            `]]
+         </div>
+
+         <!-- Last Name -->
+         <div class="form-field-wrapper">
+            <label for="lastName" class="faq-question">
+               Last name <span style="color: #BF0A0B;">*</span>
+            </label>
+            <input
+               class="form-field w-input [[!+fi.error.lastName:notempty=`field-error`]]"
+               maxlength="256"
+               name="lastName"
+               placeholder="Enter your last name"
+               type="text"
+               id="lastName"
+               value="[[!+fi.lastName]]"
+               required
+            >
+            [[!+fi.error.lastName:notempty=`
+               <span class="error-text" style="color: #BF0A0B; font-size: 0.875rem; margin-top: 5px; display: block;">[[!+fi.error.lastName]]</span>
+            `]]
+         </div>
+
+         <!-- Email -->
+         <div class="form-field-wrapper">
+            <label for="email" class="faq-question">
+               Email Address <span style="color: #BF0A0B;">*</span>
+            </label>
+            <input
+               class="form-field w-input [[!+fi.error.email:notempty=`field-error`]]"
+               maxlength="256"
+               name="email"
+               placeholder="Enter your email"
+               type="email"
+               id="email"
+               value="[[!+fi.email]]"
+               required
+            >
+            [[!+fi.error.email:notempty=`
+               <span class="error-text" style="color: #BF0A0B; font-size: 0.875rem; margin-top: 5px; display: block;">[[!+fi.error.email]]</span>
+            `]]
+         </div>
+
+         <!-- Phone -->
+         <div class="form-field-wrapper">
+            <label for="phone" class="faq-question">
+               Phone <span style="color: #BF0A0B;">*</span>
+            </label>
+            <input
+               class="form-field w-input [[!+fi.error.phone:notempty=`field-error`]]"
+               maxlength="256"
+               name="phone"
+               placeholder="Enter your phone number"
+               type="tel"
+               id="phone"
+               value="[[!+fi.phone]]"
+               required
+            >
+            [[!+fi.error.phone:notempty=`
+               <span class="error-text" style="color: #BF0A0B; font-size: 0.875rem; margin-top: 5px; display: block;">[[!+fi.error.phone]]</span>
+            `]]
+         </div>
+
+         <!-- Message -->
+         <div id="w-node-_4682a8f6-484a-d420-654a-14140757e660-26fc9b40" class="form-field-wrapper">
+            <label for="message" class="faq-question">
+               Message <span style="color: #BF0A0B;">*</span>
+            </label>
+            <textarea
+               id="message"
+               name="message"
+               maxlength="5000"
+               placeholder="Write your message"
+               class="form-field w-input [[!+fi.error.message:notempty=`field-error`]]"
+               required
+            >[[!+fi.message]]</textarea>
+            [[!+fi.error.message:notempty=`
+               <span class="error-text" style="color: #BF0A0B; font-size: 0.875rem; margin-top: 5px; display: block;">[[!+fi.error.message]]</span>
+            `]]
+         </div>
+
+      </div>
+
+      <!-- Submit Button -->
+      <input
+         type="submit"
+         name="submit-contact"
+         class="secondary-button form-button w-button"
+         value="Submit"
+      >
+
+   </form>
+
+</div>
+
+<!-- CSS per errori e animazioni -->
+<style>
+.field-error {
+   border-color: #BF0A0B !important;
+   background-color: #fff5f5 !important;
+}
+
+.success-message-custom {
+   animation: slideDown 0.5s ease-out;
+}
+
+@keyframes slideDown {
+   from {
+      opacity: 0;
+      transform: translateY(-20px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+.error-message-form {
+   animation: shake 0.5s ease-out;
+}
+
+@keyframes shake {
+   0%, 100% { transform: translateX(0); }
+   25% { transform: translateX(-10px); }
+   75% { transform: translateX(10px); }
+}
+</style>
+
+<!-- JavaScript per nascondere form dopo successo -->
+<script>
+(function() {
+   'use strict';
+
+   document.addEventListener('DOMContentLoaded', function() {
+      var successMsg = document.querySelector('.success-message-custom');
+      var form = document.getElementById('contact-form');
+      var wrapper = document.getElementById('contact-form-wrapper');
+
+      if (successMsg && form) {
+         // Nascondi il form dopo invio successo
+         form.style.display = 'none';
+
+         // Scroll al messaggio di successo
+         setTimeout(function() {
+            wrapper.scrollIntoView({
+               behavior: 'smooth',
+               block: 'center'
+            });
+         }, 100);
+      }
+
+      // Se ci sono errori, scroll al primo errore
+      var firstError = document.querySelector('.field-error');
+      if (firstError) {
+         setTimeout(function() {
+            firstError.scrollIntoView({
+               behavior: 'smooth',
+               block: 'center'
+            });
+         }, 100);
+      }
+   });
+})();
+</script>

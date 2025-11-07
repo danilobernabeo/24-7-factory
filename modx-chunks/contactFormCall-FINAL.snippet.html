@@ -1,0 +1,62 @@
+<!--
+  VERSIONE FINALE FormIt - Con UX migliorata
+
+  - Rimane nell'area del form dopo submit
+  - Mostra messaggio successo senza redirect
+  - Errori visibili nella posizione corretta
+  - Form si nasconde dopo invio successo
+-->
+
+[[!FormIt?
+   &hooks=`email`
+   &emailTpl=`contactEmail`
+   &emailSubject=`Nuova richiesta di contatto da 27Factory`
+   &emailTo=`danilo.bernabeo@gmail.com`
+   &emailFrom=`danilo.bernabeo@gmail.com`
+   &emailFromName=`Form Contatti 27Factory`
+   &emailReplyTo=`[[!+email]]`
+   &emailReplyToName=`[[!+firstName]] [[!+lastName]]`
+   &emailHtml=`1`
+   &validate=`
+      firstName:required:minLength=^2^,
+      lastName:required:minLength=^2^,
+      email:email:required,
+      phone:required:minLength=^8^,
+      message:required:minLength=^10^:maxLength=^5000^
+   `
+   &validationErrorMessage=`Si prega di correggere gli errori nel form.`
+   &successMessage=`Grazie per averci contattato! Riceverai una conferma via email e ti risponderemo al più presto.`
+   &submitVar=`submit-contact`
+   &store=`1`
+]]
+
+[[$contactForm]]
+
+<!-- JavaScript per UX migliorata -->
+<script>
+(function() {
+   'use strict';
+
+   // Scrolla al form dopo submit (se presente errore o successo)
+   window.addEventListener('DOMContentLoaded', function() {
+      var form = document.getElementById('contact-form');
+      var successMsg = document.querySelector('.success-message-custom');
+      var errorMsg = document.querySelector('.error-message-form');
+
+      if (form && (successMsg || errorMsg)) {
+         // Scroll smooth all'area del form
+         setTimeout(function() {
+            form.scrollIntoView({
+               behavior: 'smooth',
+               block: 'center'
+            });
+         }, 100);
+      }
+
+      // Se successo, nascondi il form e mostra solo il messaggio
+      if (successMsg && form) {
+         form.style.display = 'none';
+      }
+   });
+})();
+</script>
