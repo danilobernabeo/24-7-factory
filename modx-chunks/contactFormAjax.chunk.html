@@ -1,0 +1,359 @@
+<!--
+  CHUNK MODX: contactFormAjax - VERSIONE AJAX
+
+  Caratteristiche:
+  - Nessun reload della pagina
+  - Validazione client-side + server-side
+  - Errori mostrati inline senza reload
+  - Messaggio successo senza reload
+  - Form nascosto dopo invio successo
+  - Loading state durante invio
+-->
+
+<div class="form-block-2 w-form" id="contact-form-wrapper">
+
+   <!-- Messaggio di Successo (nascosto di default) -->
+   <div id="success-message" class="success-message-ajax" style="display: none;">
+      <div style="font-size: 48px; margin-bottom: 15px;">✓</div>
+      <h3 style="color: #155724; margin-top: 0; margin-bottom: 15px;">Messaggio Inviato con Successo!</h3>
+      <p style="font-size: 16px; line-height: 1.6; margin-bottom: 0;">
+         Grazie per averci contattato! Riceverai una conferma via email e ti risponderemo al più presto.
+      </p>
+   </div>
+
+   <!-- Messaggio Errore Generale (nascosto di default) -->
+   <div id="error-message-general" class="error-message-ajax" style="display: none;">
+      <strong>⚠ Attenzione:</strong> <span id="error-message-text"></span>
+   </div>
+
+   <!-- Form -->
+   <form id="contact-form" name="contact-form" class="contact-form-inner">
+
+      <h2 class="bottom-margin---m">Message</h2>
+
+      <div class="w-layout-grid contact-form-grid">
+
+         <!-- First Name -->
+         <div class="form-field-wrapper">
+            <label for="firstName" class="faq-question">
+               First name <span style="color: #BF0A0B;">*</span>
+            </label>
+            <input
+               class="form-field w-input"
+               maxlength="256"
+               name="firstName"
+               placeholder="Enter your first name"
+               type="text"
+               id="firstName"
+               required
+               minlength="2"
+            >
+            <span class="error-text" id="error-firstName" style="display: none;"></span>
+         </div>
+
+         <!-- Last Name -->
+         <div class="form-field-wrapper">
+            <label for="lastName" class="faq-question">
+               Last name <span style="color: #BF0A0B;">*</span>
+            </label>
+            <input
+               class="form-field w-input"
+               maxlength="256"
+               name="lastName"
+               placeholder="Enter your last name"
+               type="text"
+               id="lastName"
+               required
+               minlength="2"
+            >
+            <span class="error-text" id="error-lastName" style="display: none;"></span>
+         </div>
+
+         <!-- Email -->
+         <div class="form-field-wrapper">
+            <label for="email" class="faq-question">
+               Email Address <span style="color: #BF0A0B;">*</span>
+            </label>
+            <input
+               class="form-field w-input"
+               maxlength="256"
+               name="email"
+               placeholder="Enter your email"
+               type="email"
+               id="email"
+               required
+            >
+            <span class="error-text" id="error-email" style="display: none;"></span>
+         </div>
+
+         <!-- Phone -->
+         <div class="form-field-wrapper">
+            <label for="phone" class="faq-question">
+               Phone <span style="color: #BF0A0B;">*</span>
+            </label>
+            <input
+               class="form-field w-input"
+               maxlength="256"
+               name="phone"
+               placeholder="Enter your phone number"
+               type="tel"
+               id="phone"
+               required
+               minlength="8"
+            >
+            <span class="error-text" id="error-phone" style="display: none;"></span>
+         </div>
+
+         <!-- Message -->
+         <div id="w-node-_4682a8f6-484a-d420-654a-14140757e660-26fc9b40" class="form-field-wrapper">
+            <label for="message" class="faq-question">
+               Message <span style="color: #BF0A0B;">*</span>
+            </label>
+            <textarea
+               id="message"
+               name="message"
+               maxlength="5000"
+               placeholder="Write your message"
+               class="form-field w-input"
+               required
+               minlength="10"
+            ></textarea>
+            <span class="error-text" id="error-message" style="display: none;"></span>
+         </div>
+
+      </div>
+
+      <!-- Submit Button -->
+      <button
+         type="submit"
+         id="submit-button"
+         class="secondary-button form-button w-button"
+      >
+         <span id="button-text">Submit</span>
+         <span id="button-loading" style="display: none;">Sending...</span>
+      </button>
+
+   </form>
+
+</div>
+
+<!-- CSS -->
+<style>
+.field-error {
+   border-color: #BF0A0B !important;
+   background-color: #fff5f5 !important;
+}
+
+.error-text {
+   color: #BF0A0B;
+   font-size: 0.875rem;
+   margin-top: 5px;
+   display: block;
+}
+
+.success-message-ajax {
+   background-color: #d4edda;
+   border: 2px solid #28a745;
+   color: #155724;
+   padding: 30px;
+   margin-bottom: 30px;
+   border-radius: 8px;
+   text-align: center;
+   animation: slideDown 0.5s ease-out;
+}
+
+.error-message-ajax {
+   background-color: #f8d7da;
+   border: 2px solid #BF0A0B;
+   color: #721c24;
+   padding: 20px;
+   margin-bottom: 20px;
+   border-radius: 8px;
+   animation: shake 0.5s ease-out;
+}
+
+@keyframes slideDown {
+   from {
+      opacity: 0;
+      transform: translateY(-20px);
+   }
+   to {
+      opacity: 1;
+      transform: translateY(0);
+   }
+}
+
+@keyframes shake {
+   0%, 100% { transform: translateX(0); }
+   25% { transform: translateX(-10px); }
+   75% { transform: translateX(10px); }
+}
+
+/* Loading state */
+#submit-button:disabled {
+   opacity: 0.6;
+   cursor: not-allowed;
+}
+
+/* Spinner animazione */
+@keyframes spin {
+   to { transform: rotate(360deg); }
+}
+
+.spinner {
+   display: inline-block;
+   width: 14px;
+   height: 14px;
+   border: 2px solid rgba(255,255,255,0.3);
+   border-top-color: #fff;
+   border-radius: 50%;
+   animation: spin 0.6s linear infinite;
+   margin-left: 8px;
+   vertical-align: middle;
+}
+</style>
+
+<!-- JavaScript AJAX -->
+<script>
+(function() {
+   'use strict';
+
+   var form = document.getElementById('contact-form');
+   var submitButton = document.getElementById('submit-button');
+   var buttonText = document.getElementById('button-text');
+   var buttonLoading = document.getElementById('button-loading');
+   var successMessage = document.getElementById('success-message');
+   var errorMessageGeneral = document.getElementById('error-message-general');
+   var errorMessageText = document.getElementById('error-message-text');
+
+   // Funzione per mostrare errori
+   function showFieldError(fieldName, message) {
+      var field = document.getElementById(fieldName);
+      var errorSpan = document.getElementById('error-' + fieldName);
+
+      if (field && errorSpan) {
+         field.classList.add('field-error');
+         errorSpan.textContent = message;
+         errorSpan.style.display = 'block';
+      }
+   }
+
+   // Funzione per pulire errori
+   function clearErrors() {
+      var fields = ['firstName', 'lastName', 'email', 'phone', 'message'];
+      fields.forEach(function(fieldName) {
+         var field = document.getElementById(fieldName);
+         var errorSpan = document.getElementById('error-' + fieldName);
+
+         if (field) field.classList.remove('field-error');
+         if (errorSpan) {
+            errorSpan.textContent = '';
+            errorSpan.style.display = 'none';
+         }
+      });
+
+      errorMessageGeneral.style.display = 'none';
+   }
+
+   // Submit handler
+   form.addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      // Pulisci errori precedenti
+      clearErrors();
+
+      // Loading state
+      submitButton.disabled = true;
+      buttonText.style.display = 'none';
+      buttonLoading.style.display = 'inline';
+      buttonLoading.innerHTML = 'Sending... <span class="spinner"></span>';
+
+      // Prepara dati
+      var formData = new FormData(form);
+      formData.append('submit-contact', '1');
+
+      // AJAX call
+      fetch(window.location.href, {
+         method: 'POST',
+         body: formData,
+         headers: {
+            'X-Requested-With': 'XMLHttpRequest'
+         }
+      })
+      .then(function(response) {
+         return response.text();
+      })
+      .then(function(html) {
+         // Parse della risposta HTML per trovare errori FormIt
+         var parser = new DOMParser();
+         var doc = parser.parseFromString(html, 'text/html');
+
+         // Cerca errori FormIt nella risposta
+         var hasErrors = false;
+         var fieldErrors = doc.querySelectorAll('[id^="error-"]');
+
+         if (fieldErrors.length > 0) {
+            hasErrors = true;
+            fieldErrors.forEach(function(errorEl) {
+               var fieldName = errorEl.id.replace('error-', '');
+               var errorMessage = errorEl.textContent.trim();
+               if (errorMessage) {
+                  showFieldError(fieldName, errorMessage);
+               }
+            });
+
+            errorMessageText.textContent = 'Si prega di correggere gli errori evidenziati.';
+            errorMessageGeneral.style.display = 'block';
+         }
+
+         // Se non ci sono errori, mostra successo
+         if (!hasErrors) {
+            // Nascondi form
+            form.style.display = 'none';
+
+            // Mostra messaggio successo
+            successMessage.style.display = 'block';
+
+            // Scroll al messaggio
+            successMessage.scrollIntoView({
+               behavior: 'smooth',
+               block: 'center'
+            });
+         } else {
+            // Scroll al primo errore
+            var firstError = document.querySelector('.field-error');
+            if (firstError) {
+               firstError.scrollIntoView({
+                  behavior: 'smooth',
+                  block: 'center'
+               });
+            }
+         }
+      })
+      .catch(function(error) {
+         console.error('Error:', error);
+         errorMessageText.textContent = 'Si è verificato un errore. Riprova più tardi.';
+         errorMessageGeneral.style.display = 'block';
+      })
+      .finally(function() {
+         // Reset loading state
+         submitButton.disabled = false;
+         buttonText.style.display = 'inline';
+         buttonLoading.style.display = 'none';
+      });
+   });
+
+   // Validazione real-time (opzionale)
+   var inputs = form.querySelectorAll('input, textarea');
+   inputs.forEach(function(input) {
+      input.addEventListener('blur', function() {
+         var errorSpan = document.getElementById('error-' + this.id);
+         if (this.validity.valid) {
+            this.classList.remove('field-error');
+            if (errorSpan) errorSpan.style.display = 'none';
+         }
+      });
+   });
+
+})();
+</script>

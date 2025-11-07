@@ -1,0 +1,34 @@
+<!--
+  CHIAMATA FormIt per Form AJAX
+
+  IMPORTANTE:
+  - Usa lo stesso FormIt call ma il chunk è diverso
+  - Il chunk contactFormAjax gestisce l'AJAX lato client
+  - FormIt processa normalmente ma JavaScript intercetta la risposta
+  - Nessun redirect necessario
+-->
+
+[[!FormIt?
+   &hooks=`email`
+   &emailTpl=`contactEmail`
+   &emailSubject=`Nuova richiesta di contatto da 27Factory`
+   &emailTo=`danilo.bernabeo@gmail.com`
+   &emailFrom=`danilo.bernabeo@gmail.com`
+   &emailFromName=`Form Contatti 27Factory`
+   &emailReplyTo=`[[!+email]]`
+   &emailReplyToName=`[[!+firstName]] [[!+lastName]]`
+   &emailHtml=`1`
+   &validate=`
+      firstName:required:minLength=^2^,
+      lastName:required:minLength=^2^,
+      email:email:required,
+      phone:required:minLength=^8^,
+      message:required:minLength=^10^:maxLength=^5000^
+   `
+   &validationErrorMessage=`Si prega di correggere gli errori nel form.`
+   &successMessage=`Grazie per averci contattato!`
+   &submitVar=`submit-contact`
+   &store=`1`
+]]
+
+[[$contactFormAjax]]
