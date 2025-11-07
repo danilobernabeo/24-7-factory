@@ -2240,11 +2240,11 @@ blockquote {
   display:flex}
 .footer-title-large {
   color:var(--colors--white);
-  text-transform:uppercase;
+/*  text-transform:uppercase; */
   margin-bottom:100px;
   margin-left:auto;
   margin-right:auto;
-  font-size:16vw;
+  font-size:19vw;
   font-weight:600;
   line-height:100%;
   max-width:100%;
@@ -2759,7 +2759,7 @@ blockquote {
   .project-title {
     max-width:none}
   .footer-title-large {
-    font-size: clamp(3.5rem, 17vw, 20vw);
+    font-size: clamp(3.5rem, 19vw, 20vw);
     word-break: normal;
     overflow-wrap: normal;
     white-space: nowrap;
