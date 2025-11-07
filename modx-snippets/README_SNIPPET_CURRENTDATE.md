@@ -6,7 +6,7 @@ Il template email `contactEmail` mostrava la label "Data e ora:" ma nessun valor
 
 ## Soluzione
 
-Snippet MODX che restituisce la data/ora corrente formattata in italiano.
+Snippet MODX che restituisce la data/ora corrente formattata in italiano con timezone **Europe/Rome** (gestisce automaticamente ora solare CET e ora legale CEST).
 
 ## Installazione
 
@@ -27,10 +27,14 @@ Snippet MODX che restituisce la data/ora corrente formattata in italiano.
  * CurrentDate Snippet
  *
  * Restituisce la data e ora corrente formattata per l'email FormIt
+ * con timezone Italia (Europe/Rome) che gestisce automaticamente ora solare/legale
  *
  * Utilizzo: [[!CurrentDate]]
  * Output: 07/11/2025 alle 14:30
  */
+
+// Imposta timezone Italia (gestisce automaticamente CET/CEST)
+date_default_timezone_set('Europe/Rome');
 
 return date('d/m/Y \a\l\l\e H:i');
 ```
@@ -65,7 +69,42 @@ Il formato è:
 - `HH:MM` per l'ora (24h)
 - Separatore: `alle`
 
-## Personalizzazione
+## Timezone
+
+Lo snippet è configurato per il timezone **Europe/Rome** (Italia) che gestisce automaticamente:
+- **Ora solare (CET)**: UTC+1 (ottobre → marzo)
+- **Ora legale (CEST)**: UTC+2 (marzo → ottobre)
+
+### Cambiare Timezone
+
+Se il tuo server/progetto si trova in un altro paese, modifica la riga:
+
+```php
+date_default_timezone_set('Europe/Rome');
+```
+
+**Esempi altri timezone:**
+
+```php
+// Svizzera (stessa ora dell'Italia)
+date_default_timezone_set('Europe/Zurich');
+
+// Regno Unito
+date_default_timezone_set('Europe/London');
+
+// USA Est (New York)
+date_default_timezone_set('America/New_York');
+
+// USA Ovest (Los Angeles)
+date_default_timezone_set('America/Los_Angeles');
+
+// UTC (nessun cambio ora solare/legale)
+date_default_timezone_set('UTC');
+```
+
+Lista completa timezone: https://www.php.net/manual/en/timezones.php
+
+## Personalizzazione Formato
 
 Se vuoi modificare il formato, edita lo snippet e cambia:
 
@@ -117,6 +156,13 @@ Se la data non appare:
 3. Verifica che usi `[[!CurrentDate]]` con `!` (uncached)
 4. Svuota la cache MODX
 5. Controlla l'Error Log MODX per eventuali errori PHP
+
+**Se l'ora è sbagliata (es: un'ora avanti o indietro):**
+
+- Verifica che lo snippet abbia la riga `date_default_timezone_set('Europe/Rome');`
+- Controlla di aver salvato lo snippet dopo le modifiche
+- Svuota la cache MODX
+- Se il problema persiste, verifica il timezone del server PHP: crea un file `phpinfo.php` con `<?php phpinfo();` e cerca "date.timezone"
 
 ---
 
