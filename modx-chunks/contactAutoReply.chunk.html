@@ -1,0 +1,126 @@
+<!--
+  CHUNK MODX: contactAutoReply
+  Email automatica di conferma per l'utente che ha compilato il form
+  (OPZIONALE - attiva solo se desiderato)
+-->
+
+<html>
+<head>
+   <meta charset="utf-8">
+   <title>Conferma ricezione messaggio - 27Factory</title>
+   <style>
+      body {
+         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+         line-height: 1.6;
+         color: #333;
+         max-width: 600px;
+         margin: 0 auto;
+         padding: 20px;
+         background-color: #f5f5f5;
+      }
+      .container {
+         background-color: white;
+         border-radius: 8px;
+         overflow: hidden;
+         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      }
+      .header {
+         background-color: #BF0A0B;
+         color: white;
+         padding: 30px 20px;
+         text-align: center;
+      }
+      .content {
+         padding: 40px 30px;
+      }
+      .footer {
+         background-color: #f9f9f9;
+         padding: 20px 30px;
+         text-align: center;
+         border-top: 1px solid #e0e0e0;
+         font-size: 12px;
+         color: #666;
+      }
+      .button {
+         display: inline-block;
+         padding: 12px 30px;
+         background-color: #BF0A0B;
+         color: white !important;
+         text-decoration: none;
+         border-radius: 4px;
+         margin-top: 20px;
+         font-weight: 600;
+      }
+      .info-box {
+         background-color: #f9f9f9;
+         padding: 20px;
+         border-left: 4px solid #BF0A0B;
+         margin: 20px 0;
+         border-radius: 4px;
+      }
+   </style>
+</head>
+<body>
+   <div class="container">
+      <div class="header">
+         <h1 style="margin: 0; font-size: 28px;">Thank You, [[!+firstName]]!</h1>
+         <p style="margin: 10px 0 0 0; font-size: 16px; opacity: 0.95;">
+            We've received your message
+         </p>
+      </div>
+
+      <div class="content">
+         <p style="font-size: 18px; color: #BF0A0B; font-weight: 600; margin-top: 0;">
+            Your message has been successfully received.
+         </p>
+
+         <p style="font-size: 16px; line-height: 1.8;">
+            Hello <strong>[[!+firstName]] [[!+lastName]]</strong>,
+         </p>
+
+         <p style="font-size: 16px; line-height: 1.8;">
+            Thank you for reaching out to us. We have received your message and our team will review it carefully.
+            We typically respond within <strong>24 hours</strong> during business days.
+         </p>
+
+         <div class="info-box">
+            <strong style="color: #BF0A0B; font-size: 14px; text-transform: uppercase;">Your Message Summary</strong>
+            <p style="margin: 10px 0 5px 0; font-size: 14px; color: #666;">
+               <strong>Email:</strong> [[!+email]]<br>
+               <strong>Phone:</strong> [[!+phone]]<br>
+               <strong>Submitted:</strong> [[!+date:strtotime:date=`%d/%m/%Y at %H:%M`]]
+            </p>
+         </div>
+
+         <p style="font-size: 16px; line-height: 1.8;">
+            In the meantime, feel free to explore our services or connect with us on social media.
+         </p>
+
+         <div style="text-align: center;">
+            <a href="https://27factory.ch" class="button" style="color: white;">
+               Visit Our Website
+            </a>
+         </div>
+
+         <p style="font-size: 14px; color: #666; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e0e0e0;">
+            If you need immediate assistance, you can reach us at:<br>
+            <strong>Email:</strong> <a href="mailto:hello@27factory.ch" style="color: #BF0A0B; text-decoration: none;">hello@27factory.ch</a><br>
+            <strong>Location:</strong> Via Antonio Ciseri 3, 6900 Lugano, Switzerland
+         </p>
+      </div>
+
+      <div class="footer">
+         <p style="margin: 0;">
+            <strong>27Factory</strong> - Swiss Communication Makers
+         </p>
+         <p style="margin: 10px 0 0 0;">
+            Global Strategic Communication & Brand Consulting
+         </p>
+         <p style="margin: 15px 0 0 0;">
+            <a href="https://www.linkedin.com/company/27factory" style="color: #BF0A0B; text-decoration: none; margin: 0 10px;">LinkedIn</a> |
+            <a href="https://27factory.ch" style="color: #BF0A0B; text-decoration: none; margin: 0 10px;">Website</a>
+         </p>
+      </div>
+   </div>
+</body>
+</html>

@@ -1,0 +1,37 @@
+<!--
+  SNIPPET CALL: FormIt per Contact Form
+
+  Questo codice va inserito nella pagina MODX dove vuoi mostrare il form.
+  Sostituisce il codice HTML del form esistente.
+
+  IMPORTANTE: Configura prima le System Settings di MODX per l'email:
+  - emailsender (l'indirizzo mittente)
+  - site_name (nome del sito)
+-->
+
+[[!FormIt?
+   &hooks=`spam,email,redirect`
+   &emailTpl=`contactEmail`
+   &emailSubject=`Nuova richiesta di contatto da 27Factory.ch`
+   &emailTo=`hello@27factory.ch`
+   &emailFrom=`[[++emailsender]]`
+   &emailFromName=`Form Contatti 27Factory`
+   &emailReplyTo=`[[!+email]]`
+   &emailReplyToName=`[[!+firstName]] [[!+lastName]]`
+   &redirectTo=`[[*id]]`
+   &redirectParams=`{"success":"1"}`
+   &validate=`
+      firstName:required:minLength=^2^,
+      lastName:required:minLength=^2^,
+      email:email:required,
+      phone:required:minLength=^8^,
+      message:required:minLength=^10^:maxLength=^5000^
+   `
+   &validationErrorMessage=`Please correct the errors in the form below.`
+   &successMessage=`Thank you for contacting us! We will respond as soon as possible.`
+   &submitVar=`submit-contact`
+   &store=`1`
+   &storeLocation=`cache`
+]]
+
+[[$contactForm]]
