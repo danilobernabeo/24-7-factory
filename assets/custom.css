@@ -142,7 +142,7 @@ h3 {
 
   .stats-grid {
     grid-template-columns: 1fr 1fr !important; /* DUE COLONNE - 2x2 SEMPRE */
-    grid-column-gap: 50px !important; /* Spaziatura aumentata tra colonne */
+    grid-column-gap: 80px !important; /* Spaziatura aumentata tra colonne */
     grid-row-gap: 60px !important; /* Spaziatura aumentata tra righe */
     max-width: 1200px !important; /* Larghezza massima 1200px */
     margin-left: 0 !important; /* Allineamento a SINISTRA */
