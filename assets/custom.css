@@ -438,6 +438,15 @@ html {
     scroll-padding-top: 100px;
 }
 
+/* FIX ANCHOR SCROLL: Riserva spazio per immagini animate */
+/* Risolve problema scroll che si ferma troppo in alto quando l'immagine non è ancora apparsa */
+.animated-grid-image {
+    aspect-ratio: 3 / 2; /* Riserva spazio in proporzione 3:2 */
+    object-fit: cover; /* Mantiene il crop corretto */
+    width: 100%; /* Occupa tutta la larghezza disponibile */
+    height: auto !important; /* Sovrascrive height: 100% originale */
+}
+
 /* RESPONSIVE: Tablet (navbar più piccola) */
 @media screen and (max-width: 991px) {
     [id] { 
