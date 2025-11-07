@@ -111,37 +111,39 @@ h3 {
   max-width: 100% !important;
 }
 
-/* MEDIA QUERY PER TABLET (768px - 991px) - 2x2 */
-@media screen and (min-width: 768px) and (max-width: 991px) {
+/* MEDIA QUERY PER TABLET/DESKTOP (762px - 1200px) - 2x2 CON SPAZIATURA AUMENTATA */
+@media screen and (min-width: 762px) and (max-width: 1200px) {
   .home-title {
     letter-spacing: -1.5px !important;
     font-size: 14vw !important;
     line-height: 1.1 !important;
   }
-  
+
   h2 {
     margin-left: 0 !important;
     letter-spacing: -1px !important;
   }
-  
+
   .summary {
     max-width: 90% !important;
   }
-  
+
   h3 {
     font-size: 4.5vw !important;
   }
-  
+
   .stat-wrapper strong {
     font-size: 1.12em !important;
   }
-  
+
   :is(#communication, #branding, #content, #digital, #events, #customer, #people, #csr, #development) .summary {
     max-width: 100% !important;
   }
-  
+
   .stats-grid {
     grid-template-columns: 1fr 1fr !important; /* DUE COLONNE - 2x2 */
+    grid-column-gap: 50px !important; /* Spaziatura aumentata tra colonne */
+    grid-row-gap: 50px !important; /* Spaziatura aumentata tra righe */
   }
 }
 
