@@ -25,10 +25,26 @@
       phone:required:minLength=^8^,
       message:required:minLength=^10^:maxLength=^5000^
    `
-   &validationErrorMessage=`Si prega di correggere gli errori nel form.`
-   &successMessage=`Grazie per averci contattato!`
+   &validationErrorMessage=`Please correct the errors in the form.`
+   &successMessage=`Thank you for contacting us!`
    &submitVar=`submit-contact`
    &store=`1`
+
+   &firstName.vTextRequired=`Please enter your first name.`
+   &firstName.vTextMinLength=`First name must be at least 2 characters.`
+
+   &lastName.vTextRequired=`Please enter your last name.`
+   &lastName.vTextMinLength=`Last name must be at least 2 characters.`
+
+   &email.vTextRequired=`Please enter your email address.`
+   &email.vTextEmail=`Please enter a valid email address.`
+
+   &phone.vTextRequired=`Please enter your phone number.`
+   &phone.vTextMinLength=`Phone number must be at least 8 digits.`
+
+   &message.vTextRequired=`Please enter your message.`
+   &message.vTextMinLength=`Your message must be at least 10 characters.`
+   &message.vTextMaxLength=`Your message cannot exceed 5000 characters.`
 ]]
 
 [[$contactFormAjax]]
