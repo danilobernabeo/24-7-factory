@@ -13,16 +13,15 @@
 
    <!-- Messaggio di Successo (nascosto di default) -->
    <div id="success-message" class="success-message-ajax" style="display: none;">
-      <div style="font-size: 48px; margin-bottom: 15px;">✓</div>
-      <h3 style="color: #155724; margin-top: 0; margin-bottom: 15px;">Messaggio Inviato con Successo!</h3>
+      <p style="font-size: 18px; color: #155724; margin-top: 0; margin-bottom: 10px;"><strong>We've Received Your Message</strong></p>
       <p style="font-size: 16px; line-height: 1.6; margin-bottom: 0;">
-         Grazie per averci contattato! Riceverai una conferma via email e ti risponderemo al più presto.
+         Thank you for reaching out. We're already reviewing your request and someone from our team will get back to you within 24 hours.
       </p>
    </div>
 
    <!-- Messaggio Errore Generale (nascosto di default) -->
    <div id="error-message-general" class="error-message-ajax" style="display: none;">
-      <strong>⚠ Attenzione:</strong> <span id="error-message-text"></span>
+      <strong>Something needs your attention:</strong> <span id="error-message-text"></span>
    </div>
 
    <!-- Form -->
@@ -321,7 +320,7 @@
             });
 
             if (hasErrors) {
-               errorMessageText.textContent = 'Si prega di correggere gli errori evidenziati.';
+               errorMessageText.textContent = 'Please check the highlighted fields below and try again.';
                errorMessageGeneral.style.display = 'block';
 
                // Scroll al primo errore
@@ -337,14 +336,14 @@
             } else {
                // Nessun marker successo E nessun errore trovato = problema
                console.warn('No success marker and no errors found');
-               errorMessageText.textContent = 'Si è verificato un errore. Riprova più tardi.';
+               errorMessageText.textContent = 'Hmm, something unexpected happened. We\'re not sure what went wrong, but we\'re on it. Please try again in a few moments.';
                errorMessageGeneral.style.display = 'block';
             }
          }
       })
       .catch(function(error) {
          console.error('AJAX Error:', error);
-         errorMessageText.textContent = 'Si è verificato un errore di rete. Riprova più tardi.';
+         errorMessageText.textContent = 'We couldn\'t send your message. Please check your connection and try again.';
          errorMessageGeneral.style.display = 'block';
       })
       .finally(function() {
